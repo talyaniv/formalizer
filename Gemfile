@@ -1,3 +1,4 @@
+ruby '2.2.2'
 source 'https://rubygems.org'
 
 # Declare your gem's dependencies in formalizer.gemspec.
@@ -13,3 +14,6 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
+# TODO: remove
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'

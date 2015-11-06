@@ -1,8 +1,11 @@
 PATH
   remote: .
   specs:
-    formalizer (0.0.1)
+    formalizer (0.9.1)
+      nokogiri
       rails (~> 4.2.3)
+      wicked_pdf
+      wkhtmltopdf-binary
 
 GEM
   remote: https://rubygems.org/
@@ -97,6 +100,8 @@ GEM
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    wicked_pdf (1.0.0)
+    wkhtmltopdf-binary (0.9.9.3)
 
 PLATFORMS
   ruby
@@ -104,3 +109,5 @@ PLATFORMS
 DEPENDENCIES
   formalizer!
   sqlite3
+  wicked_pdf
+  wkhtmltopdf-binary

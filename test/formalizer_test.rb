@@ -1,7 +1,11 @@
 require 'test_helper'
+require 'models/form_field_test'
+require 'models/utils_test'
 
 class FormalizerTest < ActiveSupport::TestCase
-  test "truth" do
-    assert_kind_of Module, Formalizer
-  end
+
+  # setup do
+  # end
+
+
 end
