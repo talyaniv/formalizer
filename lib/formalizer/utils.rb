@@ -1,4 +1,4 @@
-module Formalizer
+class Formalizer
 
   class Utils
 
@@ -19,7 +19,11 @@ module Formalizer
         # probably relative path, searching in SEARCH_PATHS
         SEARCH_PATHS.each do |path|
           absolute_file_path = "#{File.expand_path(path)}/#{file_path}"
-          return File.read(absolute_file_path) if File.exists?(absolute_file_path)
+          begin
+            return File.read(absolute_file_path) if File.exists?(absolute_file_path)
+          rescue Errno::EISDIR
+            raise FileNotFound, 'path is a directory, not a file'
+          end
         end
       end
 

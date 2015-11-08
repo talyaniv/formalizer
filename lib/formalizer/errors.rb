@@ -1,4 +1,4 @@
-module Formalizer
+class Formalizer
   class FormFieldParamMissing < StandardError; end
   class NotUniqueId < StandardError; end
   class WrongValueClass < StandardError; end
@@ -8,4 +8,6 @@ module Formalizer
   class WrongFormTemplate < StandardError; end
   class FormFillError < StandardError; end
   class RequiredField < StandardError; end
+  class FormTemplateError < StandardError; end
+  class ConfigError < StandardError; end
 end

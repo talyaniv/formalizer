@@ -1,0 +1,41 @@
+  test1:
+    name:
+      en: Test One
+      es: Testo Uno
+    field_type: number
+    default_value: 1
+    tags:
+      - tag1
+      - tag2
+  test2:
+    name:
+      en: Test Two
+      es: Prueba de dos
+    field_type: enum
+    enumeration:
+      en:
+        - One
+        - Two
+        - Three
+      es:
+        - Uno
+        - Dos
+        - Tres
+    default_value: 0
+    tags:
+      - tag1
+  test3:
+    name:
+      en: Test Three
+      es: Prueba de tres
+    field_type: text
+    default_value:
+      en: John
+      es: Juan
+    tags:
+      - tag2
+      - tag3
+forms:
+  form1:
+    path: form1.html
+    tags: nda

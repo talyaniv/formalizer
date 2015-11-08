@@ -1,3 +1,3 @@
-module Formalizer
+class Formalizer
   VERSION = "0.9.1"
 end

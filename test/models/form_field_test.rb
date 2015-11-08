@@ -6,29 +6,39 @@ class FormFieldTest < ActiveSupport::TestCase
   # FormField tests
 
   test "form field invalid params" do
-    assert_raises(Exception) do
+    assert_raises(ArgumentError) do
       # no params
       form_field = Formalizer::FormField.new()
+    end
 
+    assert_raises(Formalizer::FormFieldParamMissing) do
       # missing name, default locale
       form_field = Formalizer::FormField.new({name: ''})
+    end
 
+    assert_raises(Formalizer::FormFieldParamMissing) do
       # missing name, localized
       form_field = Formalizer::FormField.new({name: {en: 'exists', es: ''}})
+    end
 
+
+    assert_raises(Formalizer::FormFieldParamMissing) do
       # missing enumeration
       form_field = Formalizer::FormField.new({
         name_en: 'test',
-        type: Formalizer::FormField::TYPES[:enum]
+        field_type: :enum
       })
+    end
 
+    assert_raises(Formalizer::FormFieldParamMissing) do
       # insufficient enumeration
       form_field = Formalizer::FormField.new({
         name: 'test',
-        type: Formalizer::FormField::TYPES[:enum],
+        field_type: :enum,
         enumeration: {en: ['res1', 'res2'], es: ['res1']}
       })
     end
+
   end
 
   test "form field valid params" do
@@ -51,7 +61,7 @@ class FormFieldTest < ActiveSupport::TestCase
     # enumeration
     form_field = Formalizer::FormField.new({
       name: 'test',
-      type: Formalizer::FormField::TYPES[:enum],
+      field_type: :enum,
       enumeration: ['res1', 'res2', 'res3']
     })
     assert_equal form_field.enumeration, ['res1', 'res2', 'res3']

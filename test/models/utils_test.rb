@@ -3,11 +3,14 @@ class UtilsTest < ActiveSupport::TestCase
   # Utils tests
 
   test "file not found" do
-    assert_raises(Exception) do
+    assert_raises(Formalizer::FileNotFound) do
       Formalizer::Utils.find_file('/test/dummy/blabla')
     end
-    assert_raises(Exception) do
+    assert_raises(Formalizer::FileNotFound) do
       Formalizer::Utils.find_file('blabla')
+    end
+    assert_raises(Formalizer::FileNotFound) do
+      Formalizer::Utils.find_file('')
     end
   end
 

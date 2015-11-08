@@ -1,4 +1,4 @@
-module Formalizer
+class Formalizer
 
   # Holds attributes for a single field in a form.
   #
@@ -124,25 +124,26 @@ module Formalizer
       # validating that at least one name_{locale} exists
       raise FormFieldParamMissing, 'name is requireed' if params[:name].nil?
 
-      # validate that names have at least one character
-      names = params[:name].class == Hash ? params[:name].keys : [params[:name]]
+      # validate that names are non-empty strings
+      names = params[:name].class == Hash ? params[:name].values : [params[:name]]
       names.each do |name_value|
-        if name_value.length == 0
-          raise FormFieldParamMissing, 'name should have at least one character'
-        end
+        raise WrongValueClass, 'name should be a String' unless (name_value.is_a?String)
+        raise FormFieldParamMissing, 'name cannot be empty' if name_value.empty?
       end
 
       # validating that enumeration exists if field_type is enum or multiple
-      if [TYPES[:enum], TYPES[:multiple]].include?(params[:field_type])
+      if [:enum, :multiple].include?(params[:field_type])
         error_message = "enumeration array of >1 items requireed if field_type is enum/multiple"
-        enumerations = params[:enumeration].class == Hash ? params[:enumeration].keys : [params[:enumeration]]
+        enumerations = params[:enumeration].class == Hash ? params[:enumeration].values : [params[:enumeration]]
         raise FormFieldParamMissing, error_message if enumerations.length == 0
         enumerations.each do |enumeration|
-          if !enumeration.is_a?Array || enumeration.length < 2
+          if (!enumeration.is_a?Array) || (enumeration.length < 2)
             raise FormFieldParamMissing, error_message
           end
         end
       end
+
+      # validates param types
 
     end
 

@@ -1,42 +1,35 @@
-module Formalizer
+class Formalizer
 
   class Form
 
     def initialize id, path_or_html
       validate id, path_or_html
       parse(path_or_html)
+      validate_template
       @id = id
     end
 
     def fill fields
+      @html_template.css('formalizer').each do |html_field|
+        field_id = html_field.attributes['id'].value
+        form_field = fields[field_id.to_sym]
 
-      begin
-        @html_template.css('formalizer').each do |html_field|
-          field_id = html_field.attributes['id'].value
-          form_field = fields[field_id.to_sym]
-
-          # raising error if field is required but not found in fields param, otherwise skipping this field
-          if form_field.nil?
-            required_attribute = html_field.attributes['required']
-            field_required = !required_attribute.nil? && (required_attribute.value == '' || required_attribute.value == 'true')
-            raise RequiredField, "field #{field_id} is required" if field_required
-            next
-          end
-
-          # field found in field params, so we don't care if it's required or not
-          html_field.content = form_field.value
-
+        # raising error if field is required but not found in fields param, otherwise skipping this field
+        if form_field.nil?
+          required_attribute = html_field.attributes['required']
+          field_required = !required_attribute.nil? && (required_attribute.value == '' || required_attribute.value == 'true')
+          raise RequiredField, "field #{field_id} is required" if field_required
+          next
         end
-      rescue NoMethodError
-        # Possible reason:
-        # - trying access attributes['id'].value, where there is no id (attributes['id'] = nil:NilClass)
-        raise FormFillError, '<formalizer> tag must have a simple id attribute'
+
+        # field found in field params, so we don't care if it's required or not
+        html_field.content = form_field.value
+
       end
     end
 
     def export_to_pdf filename = 'pdf'
       pdf = WickedPdf.new.pdf_from_string(@html_template.to_s)
-      # pdf.render_to_string pdf: filename, encoding: 'UTF-8'
     end
 
 
@@ -61,6 +54,12 @@ module Formalizer
       return if @html_template.css('formalizer').length > 0 # file opened, parsed.
 
       raise WrongFormTemplate, error_message
+    end
+
+    def validate_template
+      @html_template.css('formalizer').each do |html_field|
+        raise FormTemplateError if html_field.attributes['id'].nil?
+      end
     end
 
   end
