@@ -29,6 +29,7 @@ class Formalizer
     @config[:form_fields].each do |key, value|
       add_form_field value.merge(id: key)
     end
+
     @config[:forms].each do |key, value|
       add_form key, value
     end
@@ -57,15 +58,19 @@ class Formalizer
   # * +form_id+ - a unique id to the form
   # * +form_hash+ - a hash containing form path/html and tags
 
-  def add_form form_id, form_hash, tags = nil
+  def add_form form_id, form_hash
     # unique id validation
     raise NotUniqueId unless @form_sources[form_id].nil?
+    raise TypeError, 'form_hash should be Hash' unless (form_hash.is_a?Hash)
+    raise Formalizer::PathOrHtmlRequired, 'form_hash[:path] required' if form_hash[:path].nil?
 
     # adding to hash
     @form_sources[form_id] = form_hash[:path]
 
     # handling tags
     add_tags :forms, form_hash
+
+    true
   end
 
 
@@ -79,9 +84,10 @@ class Formalizer
 
 
   # Fills multiple form fields with content
-  # chash of {id: value} objects to fill multuple fields
+  # * +field_params+ - Hash of {id: value} objects to fill multuple fields
 
   def fill_fields field_params
+    raise TypeError, 'field_params should be a Hash' unless (field_params.is_a?Hash)
     field_params.each do |field_id, field_value|
       fill_field(field_id, field_value)
     end
@@ -90,17 +96,30 @@ class Formalizer
 
   # Exports a form to pdf
   # * +form_id+ - the form id to export
+  # * +tag+ - narrows down the passed fields list to fields under the specified tag.
+  #           If nil - all fields will be passed to form
 
   def export_form_to_pdf form_id, tag = nil
-    form = get_form(form_id)
-    form_fields = tag.nil? ? @form_fields : @form_fields.select{|key, ff| @tags[:form_fields][tag].include?(ff.id)}
-    form.fill(form_fields)
+    form = bind_form_fields(form_id, tag)
     return form.export_to_pdf
   end
 
 
+
+  # Exports a form to html
+  # * +form_id+ - the form id to export
+  # * +tag+ - narrows down the passed fields list to fields under the specified tag.
+  #           If nil - all fields will be passed to form
+
+  def export_form_to_html form_id, tag = nil
+    form = bind_form_fields(form_id, tag)
+    return form.export_to_html
+  end
+
+
   # Loads config from YAML file
-  # Raises an error if YAML file is ill formatted
+  # * +config_file+ - path to the config file, absolute or relative to app's 'config' path
+  # Raises an error if YAML file is ill-formatted
   # Puts a warning if not YAML file not found
 
   def load_config config_file
@@ -128,6 +147,24 @@ class Formalizer
   end
 
 
+
+  # Generates an HTML form with fields to fill.
+  # * +locale+ - relevant with enum/multiple type fields, defaults to default app locale
+  # * +form_action+ - generated form can have an action. Defaults to ''
+  # * +tag+ - narrows down thefields list to those under the specified tag. Defaults to all fields
+
+  def generate_fields_form locale = I18n.locale, form_action = '', tag = nil
+    fields = fields_by_tag(tag)
+    html = Nokogiri::HTML('<body><form action=""></form></body>')
+    fields.each do |key, field|
+      wrapper = Nokogiri::XML::Node.new('div', html)
+      rendered_field = field.render_html(wrapper, locale)
+      rendered_field.parent = wrapper
+      wrapper.parent = html.at_css('form')
+    end
+    html.to_s
+  end
+
   # Private methods
 
   private
@@ -150,6 +187,7 @@ class Formalizer
 
   # Gets a form instance
   # Returning cached instance or caching one and returning it
+  # * +form_id+ - the id of the form to get
 
   def get_form form_id
     form = @forms[form_id] || lambda{@forms[form_id] = Form.new(form_id, @form_sources[form_id])}.call
@@ -158,6 +196,11 @@ class Formalizer
 
 
   # Handles form_field and form tags
+  # * +tag_type+ - :form_fields or :forms
+  # * +object_hash+ - A hash with :tags key. The value for :tags key can an Array or String.
+  #                   if Array: ['tag1', 'tag2'] ...
+  #                   if String: will be converted to an array ['tag1']
+
   def add_tags tag_type, object_hash
     unless object_hash[:tags].nil?
       tags = (object_hash[:tags].is_a?Array) ? object_hash[:tags] : [object_hash[:tags]]
@@ -166,6 +209,27 @@ class Formalizer
         @tags[tag_type][tag_name] << object_hash[:id]
       end
     end
+  end
+
+
+  # binds form fields with data
+  # * +form_id+ - the form id to bind
+  # * +tag+ - narrows down the fields list to fields under the specified tag.
+  #           or all fields if tag is nil
+
+  def bind_form_fields form_id, tag = nil
+    form = get_form(form_id)
+    form.fill(fields_by_tag(tag))
+    return form
+  end
+
+
+  # return fields list by tag, or all fields if tag is nil
+  # * +tag+ - narrows down the fields list to fields under the specified tag.
+  #           or all fields if tag is nil
+
+  def fields_by_tag tag = nil
+    tag.nil? ? @form_fields : @form_fields.select{|key, ff| @tags[:form_fields][tag].include?(ff.id)}
   end
 
 end

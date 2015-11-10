@@ -10,4 +10,5 @@ class Formalizer
   class RequiredField < StandardError; end
   class FormTemplateError < StandardError; end
   class ConfigError < StandardError; end
+  class PathOrHtmlRequired < StandardError; end
 end

@@ -61,8 +61,8 @@ form_fields:
     field_type: number
     default_value: 1
     tags:
-      - tag1
-      - tag2
+      - test_tag_1
+      - test_tag_2
   test2:
     name:
       en: Test Two
@@ -79,7 +79,8 @@ form_fields:
         - Tres
     default_value: 0
     tags:
-      - tag1
+      - test_tag_1
+      - test_tag_2
   test3:
     name:
       en: Test Three
@@ -89,9 +90,13 @@ form_fields:
       en: John
       es: Juan
     tags:
-      - tag2
-      - tag3
+      - test_tag_1
 forms:
   form1:
     path: form1.html
     tags: nda
+  test1:
+    path: '<formalizer id="test1">___</formalizer><formalizer id="test2" required>___</formalizer><formalizer id="test3">___</formalizer>'
+    tags: 
+      - test_tag_1
+      - test_tag_2

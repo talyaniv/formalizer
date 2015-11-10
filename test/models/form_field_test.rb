@@ -73,4 +73,55 @@ class FormFieldTest < ActiveSupport::TestCase
     assert_equal form_field.value, 'success'
   end
 
+  test "html render" do
+    form_field = Formalizer::FormField.new({id: 'test1', name: 'test'})
+    assert_nothing_raised(Exception) do
+      @rendered = form_field.render_html(Nokogiri::HTML('')).to_s
+    end
+    assert @rendered == "<input type=\"text\" value=\"\" id=\"test1\">"
+
+    form_field = Formalizer::FormField.new({
+      id: 'test2',
+      name: 'test',
+      field_type: :enum,
+      enumeration: {
+        en: ['a', 'b', 'c'],
+        es: ['d', 'e', 'f']
+      }
+    })
+
+    assert_nothing_raised(Exception) do
+      @rendered = form_field.render_html(Nokogiri::HTML('')).to_s
+    end
+    assert @rendered == "<select id=\"test2\"><option value=\"0\">a</option>\n<option value=\"1\">b</option>\n<option value=\"2\">c</option></select>"
+
+    assert_nothing_raised(Exception) do
+      @rendered = form_field.render_html(Nokogiri::HTML(''), :es).to_s
+    end
+    assert @rendered == "<select id=\"test2\"><option value=\"0\">d</option>\n<option value=\"1\">e</option>\n<option value=\"2\">f</option></select>"
+
+
+
+    form_field = Formalizer::FormField.new({
+      id: 'test2',
+      name: 'test',
+      field_type: :enum,
+      enumeration: {
+        en: ['a', 'b', 'c'],
+        es: ['d', 'e', 'f']
+      },
+      default_value: 1
+    })
+    assert_nothing_raised(Exception) do
+      @rendered = form_field.render_html(Nokogiri::HTML('')).to_s
+    end
+    assert @rendered == "<select id=\"test2\"><option value=\"0\">a</option>\n<option value=\"1\" selected>b</option>\n<option value=\"2\">c</option></select>"
+
+    assert_nothing_raised(Exception) do
+      @rendered = form_field.render_html(Nokogiri::HTML(''), :es).to_s
+    end
+    assert @rendered == "<select id=\"test2\"><option value=\"0\">d</option>\n<option value=\"1\" selected>e</option>\n<option value=\"2\">f</option></select>"
+
+  end
+
 end

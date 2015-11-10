@@ -60,7 +60,7 @@ class Formalizer
     end
 
     def default_value locale = I18n.locale
-      @default_value || @localized[:default_value][locale]
+      return @localized[:default_value][locale]
     end
 
     def value locale = I18n.locale
@@ -76,6 +76,17 @@ class Formalizer
     def value= new_value
       send("validate_#{TYPES.key(@field_type)}_value", new_value)
       @value = new_value
+    end
+
+
+    # Renders the field as HTML control
+    # * +parent_node+ - the HTML parent under which to render (needed by Nokogiri)
+    # * +locale+ - localized input. Relevant if field_type is enum or multiple
+
+    def render_html parent_node, locale = I18n.locale
+      inp = send("render_html_#{TYPES.key(@field_type)}", parent_node, locale)
+      inp['id'] = @id
+      return inp
     end
 
 
@@ -148,7 +159,8 @@ class Formalizer
     end
 
 
-    # value validators
+
+    # Value validators
 
     def validate_boolean_value new_value
       is_boolean = (!!(new_value) == new_value)
@@ -180,6 +192,7 @@ class Formalizer
 
 
 
+
     # value parsers: return type dependent value
 
     def boolean_value locale
@@ -202,6 +215,52 @@ class Formalizer
       @value.map{|val| @localized[:enumeration][locale][val].to_s}
     end
 
+
+    # HTML renderers
+
+
+    def render_html_boolean parent_node, locale = I18n.locale
+      inp = Nokogiri::XML::Node.new('input', parent_node)
+      inp['type'] = 'checkbox'
+      inp['checked'] = 'true' if @default_value == true
+      return inp
+    end
+
+    def render_html_number parent_node, locale = I18n.locale
+      inp = Nokogiri::XML::Node.new('input', parent_node)
+      inp['type'] = 'number'
+      inp['value'] = @default_value if @default_value
+      return inp
+    end
+
+    def render_html_text parent_node, locale = I18n.locale
+      inp = Nokogiri::XML::Node.new('input', parent_node)
+      inp['type'] = 'text'
+      inp['value'] = self.default_value(locale)
+      return inp
+    end
+
+    def render_html_enum parent_node, locale = I18n.locale
+      return select_with_options(parent_node, locale)
+    end
+
+    def render_html_multiple parent_node, locale = I18n.locale
+      select_tag = select_with_options(parent_node, locale)
+      select_tag['multiple'] = 'true'
+      return select_tag
+    end
+
+    def select_with_options parent_node, locale = I18n.locale
+      inp = Nokogiri::XML::Node.new('select', parent_node)
+      enumeration(locale).each_with_index do |enum, index|
+        enum_option = Nokogiri::XML::Node.new('option', inp)
+        enum_option['value'] = index.to_s
+        enum_option.content = enum
+        enum_option['selected'] = 'true' if default_value == index
+        enum_option.parent = inp
+      end
+      return inp
+    end
 
 
 

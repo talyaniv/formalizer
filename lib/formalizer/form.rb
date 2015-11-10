@@ -1,6 +1,13 @@
 class Formalizer
 
+
+  # Holds a single form template and its binding
+
   class Form
+
+    # Constructor
+    # * +id+ - Unique textal identifier for the form
+    # * +path_or_html+ - Either a path to a template html file, or a raw html
 
     def initialize id, path_or_html
       validate id, path_or_html
@@ -9,7 +16,15 @@ class Formalizer
       @id = id
     end
 
+
+    # Binds fields to a template
+    # * +fields+ - Hash of id => FormField object. Fields that do not exist in the form will be ignored.
+    # * Raises an error if a required field is not present in the fields param,
+    #   or if it is present but doesn't have a value.
+
     def fill fields
+      raise TypeError unless fields.is_a?(Hash)
+
       @html_template.css('formalizer').each do |html_field|
         field_id = html_field.attributes['id'].value
         form_field = fields[field_id.to_sym]
@@ -28,12 +43,30 @@ class Formalizer
       end
     end
 
+
+    # Exports the filled form into a PDF file uwing Wicked PDF gem
+
     def export_to_pdf filename = 'pdf'
       pdf = WickedPdf.new.pdf_from_string(@html_template.to_s)
     end
 
 
+    # Exports the filled form into a raw html string
+
+    def export_to_html
+      @html_template.to_s
+    end
+
+
+    # Private methods
+
     private
+
+
+    # Validates initializer.
+    # Raises errors if cannot initialize form from path or raw html
+    # * +id+ - Unique textal identifier for the form
+    # * +path_or_html+ - Either a path to a template html file, or a raw html
 
     def validate id, path_or_html
       unless (id.is_a?String) || (id.is_a?Symbol)
@@ -41,6 +74,11 @@ class Formalizer
       end
       raise WrongValueClass, 'path/html should be a String' unless path_or_html.is_a?String
     end
+
+
+    # Parses the path/html into a final html template,
+    # Creates and fills @html_template variable for further binding.
+    # * +path_or_html+ - Either a path to a template html file, or a raw html
 
     def parse path_or_html
       # trying HTML first
@@ -55,6 +93,10 @@ class Formalizer
 
       raise WrongFormTemplate, error_message
     end
+
+
+    # Validates that the html template is usable
+    # Raises errors if <formalizer> tags don't contain id attribute
 
     def validate_template
       @html_template.css('formalizer').each do |html_field|

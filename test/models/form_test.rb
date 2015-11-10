@@ -41,6 +41,9 @@ class FormTest < ActiveSupport::TestCase
 
     assert_raises(Formalizer::WrongFormTemplate) do
       form_field = Formalizer::Form.new(:valid_id, 'invalid_html_no_formalizer_tags.html')
+    end
+    
+    assert_raises(Formalizer::FormTemplateError) do
       form_field = Formalizer::Form.new(:valid_id, 'invalid_html_formalizer_tags_without_ids.html')
     end
 
