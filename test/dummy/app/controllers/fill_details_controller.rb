@@ -1,0 +1,2 @@
+class FillDetailsController < ApplicationController
+end
