@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class DemoController - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-fill_form">#fill_form</a>
+    
+    <li ><a href="#method-i-html_template">#html_template</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-DemoController">
+  <h1 id="class-DemoController" class="class">
+    class DemoController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-fill_form" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fill_form</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Form POSTed and processed here</p>
+          
+          
+
+          
+          <div class="method-source-code" id="fill_form-source">
+            <pre><span class="ruby-comment"># File test/dummy/app/controllers/demo_controller.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fill_form</span>
+  <span class="ruby-comment"># How do you want your filled form served?</span>
+  <span class="ruby-identifier">export_to</span> = <span class="ruby-value">:pdf</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;export_PDF&#39;</span>].<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">export_to</span> = <span class="ruby-value">:html</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;export_HTML&#39;</span>].<span class="ruby-identifier">nil?</span>
+
+  <span class="ruby-comment"># Keeping only necessary params key/values</span>
+  <span class="ruby-identifier">params</span>.<span class="ruby-identifier">reject!</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-node">%w(authenticity_token controller action export_PDF export_HTML)</span>.<span class="ruby-identifier">include?</span><span class="ruby-identifier">key</span>}
+
+  <span class="ruby-comment"># Sanitizing</span>
+  <span class="ruby-identifier">sanitized_params</span> = <span class="ruby-identifier">params</span>.<span class="ruby-identifier">inject</span>({}) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span>, (<span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span>)<span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">v</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">helpers</span>.<span class="ruby-identifier">sanitize</span>(<span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_s</span>)
+      <span class="ruby-identifier">v</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">helpers</span>.<span class="ruby-identifier">strip_tags</span>(<span class="ruby-identifier">v</span>)
+      <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">k</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">v</span>)
+    <span class="ruby-keyword">rescue</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Could not sanitize: #{hash}&quot;</span>
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Filling and exporting</span>
+  <span class="ruby-identifier">formalizer</span> = <span class="ruby-constant">Formalizer</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">formalizer</span>.<span class="ruby-identifier">fill_fields</span>(<span class="ruby-identifier">sanitized_params</span>.<span class="ruby-identifier">symbolize_keys</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">export_to</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:pdf</span>
+      <span class="ruby-comment"># pdf will be downloaded at client</span>
+      <span class="ruby-identifier">pdf_stream</span> = <span class="ruby-identifier">formalizer</span>.<span class="ruby-identifier">export_form_to_pdf</span>(<span class="ruby-value">:form1</span>, <span class="ruby-string">&#39;nda&#39;</span>)
+      <span class="ruby-identifier">send_data</span> <span class="ruby-identifier">pdf_stream</span>, {<span class="ruby-identifier">filename</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;demo.pdf&#39;</span>, <span class="ruby-identifier">disposition</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;attachment&#39;</span>}
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:html</span>
+      <span class="ruby-comment"># html will be rendered inline</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">html</span><span class="ruby-operator">:</span> <span class="ruby-identifier">formalizer</span>.<span class="ruby-identifier">export_form_to_html</span>(<span class="ruby-value">:form1</span>, <span class="ruby-string">&#39;nda&#39;</span>).<span class="ruby-identifier">html_safe</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-html_template" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">html_template</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Demo page has a link to this action. Renders the empty, unfilled demo
+template</p>
+          
+          
+
+          
+          <div class="method-source-code" id="html_template-source">
+            <pre><span class="ruby-comment"># File test/dummy/app/controllers/demo_controller.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">html_template</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">html</span><span class="ruby-operator">:</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-string">&#39;config/form1.html&#39;</span>).<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Formalizer&#39;s generated form has no authenticity_token field.  This
+field can (and should) be used, either manually or automatically, by
+replacing the generated &lt;form&gt; tag with Rails form_tag or
+form_for(active_record model) helper. To skip authenticity protection in
+this controller, uncomment the following line at your own risk:
+protect_from_forgery :only =&gt; [:index]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File test/dummy/app/controllers/demo_controller.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+
+  <span class="ruby-comment"># deault root view</span>
+
+  <span class="ruby-comment"># navbar current view:</span>
+  <span class="ruby-ivar">@page</span> = <span class="ruby-string">&#39;demo&#39;</span>
+
+  <span class="ruby-comment"># the form is submitted to the same page, handling the POST method first:</span>
+  <span class="ruby-identifier">fill_form</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">method</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;POST&#39;</span>
+
+  <span class="ruby-comment"># Letting Formalizer generate a user input form</span>
+  <span class="ruby-comment"># We limit fields only to &#39;nda&#39; tag. Other config tags relate to unit tests,</span>
+  <span class="ruby-comment"># and are not relevant to the demo&#39;s nda form</span>
+
+  <span class="ruby-identifier">fill_form</span> = <span class="ruby-constant">Formalizer</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">generate_fields_form</span>(<span class="ruby-constant">I18n</span>.<span class="ruby-identifier">locale</span>, <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-string">&#39;nda&#39;</span>)
+
+  <span class="ruby-comment"># The generated form is ready to use as is, but we&#39;re spicing it up a bit with Bootswatch classes:</span>
+  <span class="ruby-identifier">fill_form_html</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">fill_form</span>)
+  <span class="ruby-identifier">auth_token_field</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span><span class="ruby-operator">::</span><span class="ruby-constant">Node</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;input&#39;</span>, <span class="ruby-identifier">fill_form_html</span>)
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;div&#39;</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">div</span><span class="ruby-operator">|</span> <span class="ruby-identifier">div</span>[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;form-group&#39;</span>}
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;label&#39;</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">label</span><span class="ruby-operator">|</span> <span class="ruby-identifier">label</span>[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;col-lg-4 control-label&#39;</span>}
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;div.form-group input:not([type=&quot;reset&quot;]):not([type=&quot;submit&quot;])&#39;</span>).<span class="ruby-identifier">wrap</span>(<span class="ruby-string">&#39;&lt;div class=&quot;col-lg-8&quot;&gt;&#39;</span>)
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;div.form-group select&#39;</span>).<span class="ruby-identifier">wrap</span>(<span class="ruby-string">&#39;&lt;div class=&quot;col-lg-8&quot;&gt;&#39;</span>)
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;div.form-group input&#39;</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">input</span><span class="ruby-operator">|</span> <span class="ruby-identifier">input</span>[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;form-control&#39;</span>}
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;div.form-group select&#39;</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">select</span><span class="ruby-operator">|</span> <span class="ruby-identifier">select</span>[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;form-control&#39;</span>}
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;input[type=&quot;reset&quot;]&#39;</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">input</span><span class="ruby-operator">|</span> <span class="ruby-identifier">input</span>[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;btn btn-default&#39;</span>}
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;input[type=&quot;submit&quot;]&#39;</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">input</span><span class="ruby-operator">|</span> <span class="ruby-identifier">input</span>[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;btn btn-primary&#39;</span>}
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;div.form-group:last-child&#39;</span>).<span class="ruby-identifier">wrap</span>(<span class="ruby-string">&#39;&lt;div class=&quot;form-buttons form-group&quot;&gt;&#39;</span>)
+  <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&#39;div.form-buttons &gt; div&#39;</span>)[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;col-lg-8 col-lg-offset-2&#39;</span>
+
+  <span class="ruby-comment"># Adding authenticity token. The following lines can be commented out if</span>
+  <span class="ruby-comment"># the protect_from_forgery line is uncommented (see comments at the top)</span>
+  <span class="ruby-identifier">form_tag</span> = <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&#39;form&#39;</span>)
+  <span class="ruby-identifier">form_tag</span>[<span class="ruby-string">&#39;class&#39;</span>] = <span class="ruby-string">&#39;form-horizontal&#39;</span>
+  <span class="ruby-identifier">auth_token_field</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span><span class="ruby-operator">::</span><span class="ruby-constant">Node</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;input&#39;</span>, <span class="ruby-identifier">fill_form_html</span>)
+  <span class="ruby-identifier">auth_token_field</span>[<span class="ruby-string">&#39;type&#39;</span>] = <span class="ruby-string">&#39;hidden&#39;</span>
+  <span class="ruby-identifier">auth_token_field</span>[<span class="ruby-string">&#39;name&#39;</span>] = <span class="ruby-string">&#39;authenticity_token&#39;</span>
+  <span class="ruby-identifier">auth_token_field</span>[<span class="ruby-string">&#39;value&#39;</span>] = <span class="ruby-identifier">form_authenticity_token</span>
+  <span class="ruby-identifier">auth_token_field</span>.<span class="ruby-identifier">parent</span> = <span class="ruby-identifier">form_tag</span>
+
+  <span class="ruby-comment"># Finalizing and wrapping the form for view</span>
+  <span class="ruby-ivar">@fill_details</span> = <span class="ruby-identifier">fill_form_html</span>.<span class="ruby-identifier">at_css</span>(<span class="ruby-string">&#39;form&#39;</span>).<span class="ruby-identifier">to_s</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

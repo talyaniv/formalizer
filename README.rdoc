@@ -1,0 +1,203 @@
+= Formalizer
+
+{<img src="https://badge.fury.io/gh/talyaniv%2Fformalizer.svg" alt="GitHub version" />}[https://badge.fury.io/gh/talyaniv%2Fformalizer]
+
+== About
+
+https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png
+
+Formalizer is an open-source gem for simplifying HTML-form filling and exporting:
+
+* Store blank contracts, agreements, disclosure sheets etc. as HTML templates.
+* In form templates, wrap blank data with <formalizer> tags:
+  * *before:* <code>name: ________</code>
+  * *after:* <code>name: <formalizer id="name">________</formalizer></code>
+* Get user data from any source, or simply let Formalizer generate user-input forms for you.
+* Formalizer will replace the template <formalizer> tags with user data:
+    name: <formalizer id="name">John D.</formalizer>
+* Filled forms can be exported to PDF using {Wicked PDF gem}[https://github.com/mileszs/wicked_pdf], or to raw html, for additional styling.
+ 
+== Install
+  gem install 'formalizer'
+or add to your Gemfile:
+  gem 'formalizer'
+
+== Demo
+
+Clone this repo, edit the root Gemfile and uncomment the last two lines:
+  gem 'wicked_pdf'
+  gem 'wkhtmltopdf-binary'
+
+Start the demo:
+  $ cd test/dummy
+  $ bundle install
+  $ rails server
+
+Go to http://localhost:3000
+
+== Usage
+
+=== Configuration
+
+Formalizer looks for `formalizer.yml` YAML file in config directory. If exists, it will load the configuration, otherwise, it can be configured programatically.
+
+=== Very basic example
+
+  # config/formalizer.yml
+  form_fields:
+    name:
+      name: Your full name 
+    gender:
+      name: Your gender 
+      field_type: enum
+      enumeration:
+        - Male
+        - Female
+        - Irellevant
+      default_value: 2
+  forms:
+    simple_form_example:
+      path: 'An HTML template that requires a name:<formalizer id="name" required>_____ (required)</formalizer>, and an optional gender:<formalizer id="gender">[male, female, irrelevant] (optional)</formalizer>'`
+
+To fill the (only) form template, we need user input for name and gender. Here is a quick flow from user data to filled PDF file:
+
+  formalizer = Formalizer.new # will load YAML configuration
+
+  # Filling fields with values, regardless to the template form, so they can be reusable to another template form. Since we configured gender to be enum (zero based), a Female value is 1 (0 - Male, 1 - Female, 2 - Irrelevant):
+  formalizer.fill_fields({name: 'Michelle Markus', gender: 1})
+
+  # Exporting to PDF:
+  pdf_file = formalizer.export_form_to_pdf(:simple_form_example)
+
+  # Inside a controller, you can push the result to user:
+  send_data pdf_file, {filename: 'simple_form_example.pdf', disposition: 'attachment'}
+
+
+== Under the hood
+=== Forms, Form Fields and tags
+Let's say we have three different form templates:
+1. Cover Page
+2. NDA
+3. Purchase Agreement
+
+All three forms require personal user input: Full name and address. NDA and Purchase agreement also require recipient's full name and address. We end up with four fields:
+1. Full name
+2. Address
+3. Recipient's Full name
+4. Recipient's Address
+
+By having user input for all four fields, we can fill the three templates altogether and export as filled PDF or HTML files.
+
+Since Cover Page doesn't require recipient fields, we can group our forms and fields in tags:
+* *with_recipient:* forms 2 and 3, fields 3 and 4
+* *without_recipient:* form 1, fields 1 and 2
+Now, if we only fill the cover page, we don't need to pass all the fields:
+  pdf_file = formalizer.export_form_to_pdf(:cover_page, 'without_recipient')
+This will make the call more efficient, as it will pass only 'without_recipient' fields.
+
+=== Form Fields
+In YAML configuration:
+  form_fields:
+    [field_unique_id]:
+      name: (required) Text that will be displayed to user when generating an input form.
+      field_type: (optional) One of the following: text, boolean, number, enum or multiple. Default - text
+      tags: (optional) one or more tag that this field belongs to, e.g. 'without_recipient'
+      default_value: (optional) default value for filling templates without user input. Boolean field_type: true/false. Enum field_type: the selected value, zero-based.
+      enumeration: (required if field_type is enum) a list of at least two options
+
+   forms:
+     [form_unique_id]:
+       path: (required) a file path to the form, or actual form html. The file path can be absolute or relative to config directory.
+       tags: (optional) one or more tags that this form belongs to, e.g. 'without_recipient'
+
+Localization:
+form_field name and enumeration can have localized version. If not stated, Formalizer will use Application's locale (+I18n.locale+). Otherwise, use this syntax:
+  form_fields
+    gender:
+      name:
+        en: gender
+        es: género
+      field_type: enum
+      enumeration:
+        en:
+          - Male
+          - Female
+          - Irrelevant
+        es:
+          - Masculino
+          - Feminino
+          - Irrelevante
+
+== Generating user details form
+
+In the above example, we had four fields to be filled with user data. We can generate an html form for receiving input data:
+  # Creating a Formalizer instance
+  formalizer = Formalizer.new
+
+  # Formalizer::generate_fields_form locale = I18n.locale, form_action = '', tag = nil
+  simple_form = formalizer.generate_fields_form
+  # this will create a <form> with all four fields
+
+  # more specific versions:
+  localized_form = formalizer.generate_fields_form(:es)
+  form_with_action = formalizer.generate_fields_form(I18n.locale, 'post_fields')
+  partial_form = formalizer.generate_fields_form(I18n.locale, '', 'without_recipient')
+
+
+== HTML images and styles
+
+Binding happens at the server, so we need absolute file paths to images and css files. See the demo for specific code examples. Basically your html can look like this:
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>Cover Page</title>
+        <link rel="stylesheet" type="text/css" href="/assets/form.css">
+        <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div>
+      <img src='/assets/acme_logo.jpg' />
+      <img src='https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/acme_logo.jpg' />
+      <h1>Cover Page</h1>
+      Name: <formalizer id="recipient" required>______________________________</formalizer>
+    </div>
+  </body>
+  </html>
+
+Formalizer will know how to use external URLs or find files (css and images) inside your app's assets directory. If your files resist elsewhere, you will need to give an absolute file:// link. Formalizer *does not* convert style/css url()s in the current version.
+
+== Advanced: Using Formalizer programatically
+
+So you want to skip the config file and DIY:
+
+  # Creating a Formalizer instance
+  formalizer = Formalizer.new
+  
+  # adding a form from a file, located in config directory
+  # Formalizer::add_form (symbol) id, (hash) details
+  formalizer.add_form(:form1, {path: 'form1.html'})
+
+  # creating a field
+  # Formalizer::add_form_field (hash) details
+  formalizer.add_form_field({id: :field1, name: 'email'})
+
+  # filling the template with user input
+  # Formalizer::field_field (Symbol) field_id, field_value
+  formalizer.fill_field :field1, 'john@doe.com'
+
+  # Exporting
+  formalizer.export_form_to_pdf(:form1)
+
+== Contributing to Formazlier
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Fork the project
+* Start a feature/bugfix branch
+* Commit and push until you are happy with your contribution
+* Make sure to add tests for it. Tests are important for future stability! Run tests before pushing.
+* If you uncommented the root Gemfile, remember to comment it again.
+* Feel free to email and report issues!
+
+== Copyright
+
+Copyright (c) 2015 Tal Yaniv. See MIT-LICENSE for further details.

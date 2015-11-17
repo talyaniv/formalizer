@@ -85,7 +85,7 @@ class Formalizer
 
 
   # Fills multiple form fields with content
-  # * +field_params+ - Hash of {id: value} objects to fill multuple fields
+  # * +field_params+ - Hash of field_id: field_value objects to fill multuple fields
 
   def fill_fields field_params
     raise TypeError, 'field_params should be a Hash' unless (field_params.is_a?Hash)

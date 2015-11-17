@@ -14,6 +14,6 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-# TODO: remove
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+# Uncomment for demo:
+# gem 'wicked_pdf'
+# gem 'wkhtmltopdf-binary'

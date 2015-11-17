@@ -1,0 +1,7 @@
+lib/formalizer.rb 7c26edf33ec17d6c32e38e5c0a5c8792e1907f92
+lib/formalizer/form.rb 9ecd92f9fc32a44175c0a2702dfe8057bd6c7f99
+lib/formalizer/utils.rb 5310892e55f16da5af2b305a7c07a4ef4ba1d859
+lib/formalizer/errors.rb 14dacfeb00c1d50603f624d7af4b870055a93fc0
+lib/formalizer/version.rb 4a24c01c0592e87285a0e2a5d3b0c8f8dedd4171
+lib/formalizer/form_field.rb 73cad80bd43083ccf00b65e20f09dd782df48f8b
+lib/formalizer/formalizer.rb 127a9a15059ba1e77729bb81645acd300fdb93fc

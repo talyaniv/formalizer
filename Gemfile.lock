@@ -109,5 +109,3 @@ PLATFORMS
 DEPENDENCIES
   formalizer!
   sqlite3
-  wicked_pdf
-  wkhtmltopdf-binary
