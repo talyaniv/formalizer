@@ -4,7 +4,7 @@
 
 == About
 
-https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png
+{<img src="https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png" alt="Formalizer flow scheme" />}
 
 Formalizer is an open-source gem for simplifying HTML-form filling and exporting:
 
@@ -32,14 +32,13 @@ Start the demo:
   $ cd test/dummy
   $ bundle install
   $ rails server
-
-Go to http://localhost:3000
+  $ open http://localhost:3000
 
 == Usage
 
 === Configuration
 
-Formalizer looks for `formalizer.yml` YAML file in config directory. If exists, it will load the configuration, otherwise, it can be configured programatically.
+Formalizer looks for +formalizer.yml+ YAML file in config directory. If exists, it will load the configuration, otherwise, it can be configured programatically.
 
 === Very basic example
 
@@ -57,7 +56,7 @@ Formalizer looks for `formalizer.yml` YAML file in config directory. If exists, 
       default_value: 2
   forms:
     simple_form_example:
-      path: 'An HTML template that requires a name:<formalizer id="name" required>_____ (required)</formalizer>, and an optional gender:<formalizer id="gender">[male, female, irrelevant] (optional)</formalizer>'`
+      path: 'An HTML template that requires a name:<formalizer id="name" required>_____ (required)</formalizer>, and an optional gender:<formalizer id="gender">[male, female, irrelevant] (optional)</formalizer>'
 
 To fill the (only) form template, we need user input for name and gender. Here is a quick flow from user data to filled PDF file:
 
