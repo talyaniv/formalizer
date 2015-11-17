@@ -15,5 +15,5 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 # Uncomment for demo:
-gem 'wicked_pdf'
+gem 'wicked_pdf', '~> 1.0.0'
 gem 'wkhtmltopdf-binary'

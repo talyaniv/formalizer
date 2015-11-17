@@ -1,6 +1,9 @@
 = Formalizer
 
 {<img src="https://badge.fury.io/rb/formalizer.svg" alt="Gem Version" />}[https://badge.fury.io/rb/formalizer]
+{<img src="https://travis-ci.org/talyaniv/formalizer.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/talyaniv/formalizer.svg?branch=master]
+{<img src="https://gemnasium.com/talyaniv/formalizer.svg" alt="Dependency Status" />}[https://gemnasium.com/talyaniv/formalizer]
+
 
 {<img src="https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png" alt="Formalizer flow scheme" />}[https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png]
 
@@ -25,11 +28,7 @@ or add to your Gemfile:
 
 == Demo
 
-Clone this repo, edit the root Gemfile and uncomment the last two lines:
-  gem 'wicked_pdf'
-  gem 'wkhtmltopdf-binary'
-
-Start the demo:
+Clone this repo and start the demo:
   $ cd test/dummy
   $ bundle install
   $ rails server

@@ -24,6 +24,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2"
   s.add_dependency "nokogiri", "~> 1.3"
-  s.add_dependency "wicked_pdf", "~> 0"
+  s.add_dependency "wicked_pdf", "~> 1.0.0"
   s.add_dependency "wkhtmltopdf-binary", "~> 0"
 end
