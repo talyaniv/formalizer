@@ -2,7 +2,7 @@
 
 {<img src="https://badge.fury.io/gh/talyaniv%2Fformalizer.svg" alt="GitHub version" />}[https://badge.fury.io/gh/talyaniv%2Fformalizer]
 
-{rdoc-image:https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png}[Formalizer flow scheme]
+{<img src="https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png" alt="Formalizer flow scheme" />}[https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png]
 
 == About
 
