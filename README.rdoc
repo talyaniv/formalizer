@@ -4,7 +4,7 @@
 
 == About
 
-{<img src="https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png" alt="Formalizer flow scheme" />}
+{<img src="https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png" alt="Formalizer flow scheme" />}[Formalizer flow scheme]
 
 Formalizer is an open-source gem for simplifying HTML-form filling and exporting:
 
