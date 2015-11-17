@@ -164,7 +164,7 @@ Binding happens at the server, so we need absolute file paths to images and css 
   </body>
   </html>
 
-Formalizer will know how to use external URLs or find files (css and images) inside your app's assets directory. If your files resist elsewhere, you will need to give an absolute file:// link. Formalizer *does not* convert style/css url()s in the current version.
+Formalizer will know how to use external URLs or find files (css and images) inside your app's assets directory. If your files reside elsewhere, you will need to give an absolute file:// link. Formalizer *does not* convert style/css url()s in the current version.
 
 == Advanced: Using Formalizer programatically
 
