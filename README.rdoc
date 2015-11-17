@@ -1,6 +1,6 @@
 = Formalizer
 
-{<img src="https://badge.fury.io/gh/talyaniv%2Fformalizer.svg" alt="GitHub version" />}[https://badge.fury.io/gh/talyaniv%2Fformalizer]
+{<img src="https://badge.fury.io/rb/formalizer.svg" alt="Gem Version" />}[https://badge.fury.io/rb/formalizer]
 
 {<img src="https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png" alt="Formalizer flow scheme" />}[https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png]
 
