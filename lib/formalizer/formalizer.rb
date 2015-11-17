@@ -79,6 +79,7 @@ class Formalizer
   # * +field_value+ - value to fill the field
 
   def fill_field field_id, field_value
+    raise FieldNotFound, "field #{field_id} not found" if @form_fields[field_id].nil?
     @form_fields[field_id].value = field_value
   end
 
@@ -155,13 +156,30 @@ class Formalizer
 
   def generate_fields_form locale = I18n.locale, form_action = '', tag = nil
     fields = fields_by_tag(tag)
-    html = Nokogiri::HTML('<body><form action=""></form></body>')
+    action = form_action.empty? ? '' : " action=\"#{form_action}\""
+    html = Nokogiri::HTML("<body><form#{action} method='POST'><fieldset></fieldset></form></body>")
     fields.each do |key, field|
       wrapper = Nokogiri::XML::Node.new('div', html)
+      label = Nokogiri::XML::Node.new('label', wrapper)
+      label['for'] = field.id
+      label.content = "#{field.name(locale)}:"
       rendered_field = field.render_html(wrapper, locale)
+      label.parent = wrapper
       rendered_field.parent = wrapper
-      wrapper.parent = html.at_css('form')
+      wrapper.parent = html.at_css('fieldset')
     end
+    submit_container = Nokogiri::XML::Node.new('div', html)
+    submit_types = %w(HTML PDF)
+    %w(reset submit submit).each_with_index do |control_type, index|
+      reset_submit = Nokogiri::XML::Node.new('input', submit_container)
+      reset_submit['type'] = control_type
+      if control_type == 'submit'
+        reset_submit['name'] = "export_#{submit_types[index - 1]}"
+        reset_submit['value'] = "Export as #{submit_types[index - 1]}"
+      end
+      reset_submit.parent = submit_container
+    end
+    submit_container.parent = html.at_css('fieldset')
     html.to_s
   end
 

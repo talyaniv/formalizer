@@ -78,7 +78,7 @@ class FormFieldTest < ActiveSupport::TestCase
     assert_nothing_raised(Exception) do
       @rendered = form_field.render_html(Nokogiri::HTML('')).to_s
     end
-    assert @rendered == "<input type=\"text\" value=\"\" id=\"test1\">"
+    assert @rendered == "<input type=\"text\" value=\"\" id=\"test1\" name=\"test1\">"
 
     form_field = Formalizer::FormField.new({
       id: 'test2',
@@ -93,12 +93,12 @@ class FormFieldTest < ActiveSupport::TestCase
     assert_nothing_raised(Exception) do
       @rendered = form_field.render_html(Nokogiri::HTML('')).to_s
     end
-    assert @rendered == "<select id=\"test2\"><option value=\"0\">a</option>\n<option value=\"1\">b</option>\n<option value=\"2\">c</option></select>"
+    assert @rendered == "<select id=\"test2\" name=\"test2\"><option value=\"0\">a</option>\n<option value=\"1\">b</option>\n<option value=\"2\">c</option></select>"
 
     assert_nothing_raised(Exception) do
       @rendered = form_field.render_html(Nokogiri::HTML(''), :es).to_s
     end
-    assert @rendered == "<select id=\"test2\"><option value=\"0\">d</option>\n<option value=\"1\">e</option>\n<option value=\"2\">f</option></select>"
+    assert @rendered == "<select id=\"test2\" name=\"test2\"><option value=\"0\">d</option>\n<option value=\"1\">e</option>\n<option value=\"2\">f</option></select>"
 
 
 
@@ -115,12 +115,12 @@ class FormFieldTest < ActiveSupport::TestCase
     assert_nothing_raised(Exception) do
       @rendered = form_field.render_html(Nokogiri::HTML('')).to_s
     end
-    assert @rendered == "<select id=\"test2\"><option value=\"0\">a</option>\n<option value=\"1\" selected>b</option>\n<option value=\"2\">c</option></select>"
+    assert @rendered == "<select id=\"test2\" name=\"test2\"><option value=\"0\">a</option>\n<option value=\"1\" selected>b</option>\n<option value=\"2\">c</option></select>"
 
     assert_nothing_raised(Exception) do
       @rendered = form_field.render_html(Nokogiri::HTML(''), :es).to_s
     end
-    assert @rendered == "<select id=\"test2\"><option value=\"0\">d</option>\n<option value=\"1\" selected>e</option>\n<option value=\"2\">f</option></select>"
+    assert @rendered == "<select id=\"test2\" name=\"test2\"><option value=\"0\">d</option>\n<option value=\"1\" selected>e</option>\n<option value=\"2\">f</option></select>"
 
   end
 

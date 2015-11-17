@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "formalizer"
   s.version     = Formalizer::VERSION
   s.authors     = ["Tal Yaniv, nrc2015"]
-  s.email       = ["tal@reali.com"]
+  s.email       = ["talyaniv@gmail.com"]
   s.platform    = Gem::Platform::RUBY
   s.date        = Time.now.strftime('%Y-%m-%d')
   s.required_ruby_version = '~> 2.0'

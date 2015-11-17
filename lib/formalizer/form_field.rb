@@ -1,3 +1,11 @@
+class String
+  def to_bool
+    return true   if self == true   || self =~ (/(true|t|yes|y|1)$/i)
+    return false  if self == false  || self.blank? || self =~ (/(false|f|no|n|0)$/i)
+    raise ArgumentError.new("invalid value for Boolean: \"#{self}\"")
+  end
+end
+
 class Formalizer
 
   # Holds attributes for a single field in a form.
@@ -64,7 +72,7 @@ class Formalizer
     end
 
     def value locale = I18n.locale
-      return nil if @value.nil?
+      return '' if @value.nil?
       return send("#{TYPES.key(@field_type)}_value", locale)
     end
 
@@ -74,8 +82,8 @@ class Formalizer
     # Since we deal with html, value must be a String
 
     def value= new_value
-      send("validate_#{TYPES.key(@field_type)}_value", new_value)
-      @value = new_value
+      validated = send("validate_#{TYPES.key(@field_type)}_value", new_value)
+      @value = validated
     end
 
 
@@ -86,6 +94,7 @@ class Formalizer
     def render_html parent_node, locale = I18n.locale
       inp = send("render_html_#{TYPES.key(@field_type)}", parent_node, locale)
       inp['id'] = @id
+      inp['name'] = @id
       return inp
     end
 
@@ -163,31 +172,42 @@ class Formalizer
     # Value validators
 
     def validate_boolean_value new_value
+      new_value = new_value.to_bool if new_value.is_a?String
       is_boolean = (!!(new_value) == new_value)
       raise WrongValueClass, 'value should be boolean' unless is_boolean
+      return new_value
     end
 
     def validate_number_value new_value
+      if new_value.is_a?String
+        new_value = (new_value.include?'.') ? new_value.to_f : new_value.to_i
+      end
       is_number = ((new_value.is_a?Fixnum) || (new_value.is_a?Float))
       raise WrongValueClass, 'value should be a number' unless is_number
+      return new_value
     end
 
     def validate_text_value new_value
       raise WrongValueClass, 'value whould be a string' unless new_value.is_a?String
+      return new_value
     end
 
     def validate_enum_value new_value
+      new_value = new_value.to_i if new_value.is_a?String
       raise WrongValueClass, 'value should be a fixnum' unless new_value.is_a?Fixnum
       raise WrongValueClass, 'value should be >= 0' if new_value < 0
       min_enumeration_length = @localized[:enumeration].values.map{|enumeration| enumeration.length}.min
       raise WrongValue, 'value should be within enumeration range' if new_value >= min_enumeration_length
+      return new_value
     end
 
     def validate_multiple_value new_value
+      new_value = new_value.to_i if new_value.is_a?String
       raise WrongValueClass, 'value should be an array' unless new_value.is_a?Array
       min_enumeration_length = @localized[:enumeration].values.map{|enumeration| enumeration.length}.min
       raise WrongValueClass, 'array values should be >= 0' if new_value.min < 0
       raise WrongValue, 'values should be within enumeration range' if new_value.max >= min_enumeration_length
+      return new_value
     end
 
 
@@ -200,19 +220,19 @@ class Formalizer
     end
 
     def number_value locale
-      @value.to_s
+      @value ? @value.to_s : ''
     end
 
     def text_value locale
-      @value
+      @value || ''
     end
 
     def enum_value locale
-      @localized[:enumeration][locale][@value].to_s
+      @value.nil? ? '' : @localized[:enumeration][locale][@value].to_s
     end
 
     def multiple_value locale
-      @value.map{|val| @localized[:enumeration][locale][val].to_s}
+      @value.nil? ? '' : @value.map{|val| @localized[:enumeration][locale][val].to_s}
     end
 
 
@@ -299,3 +319,4 @@ class Formalizer
 
   end
 end
+

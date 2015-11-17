@@ -11,4 +11,5 @@ class Formalizer
   class FormTemplateError < StandardError; end
   class ConfigError < StandardError; end
   class PathOrHtmlRequired < StandardError; end
+  class FieldNotFound < StandardError; end
 end

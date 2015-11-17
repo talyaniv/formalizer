@@ -3,15 +3,17 @@
   <head>
     <title>Confidentiality Agreement</title>
 
+        <link rel="stylesheet" type="text/css" href="/assets/form.css">
+
         <meta charset="UTF-8" />
 
   </head>
 
 <body>
 
-    <div class="subsection">
-      <a name="Agreement" id="Agreement"></a>
-      <h3 class="subtitle">Confidential Disclosure Agreement</h3>
+    <div>
+      <img src='/assets/acme_logo.jpg' />
+      <h1>Confidential Disclosure Agreement</h1>
       <p>
         This Agreement is entered into this <formalizer id="day" required="false">___</formalizer> day of <formalizer id="month" reuired>________</formalizer>, <formalizer id="year" required>_____</formalizer> by and between
         <formalizer id="recipient" required>______________________</formalizer> with offices at <formalizer id="recipient_address">______________________</formalizer> (hereinafter
@@ -62,7 +64,7 @@
         proprietary and the Recipient shall have no obligation with respect to such information where
         the information: 
       </p>
-      <blockquote class="indent">
+      <blockquote>
         <p>
           (a) was known to Recipient prior to receiving any of the Confidential Information from
           Discloser;
@@ -102,36 +104,34 @@
         IN WITNESS WHEREOF, the parties have executed this agreement effective as of the date first
         written above.
       </p>
-      <div class="row">
-        <div class="6u">
-          DISCLOSER (_____________________) 
+      <div class="columns">
+        <div class="column">
+          <div>
+            DISCLOSER (_____________________) 
+          </div>
+          <div>
+            Signed: <formalizer id="recipient_signed_date" required>______________________________</formalizer>
+          </div>
+          <div>
+            Name: <formalizer id="recipient" required>______________________________</formalizer>
+          </div>
+          <div>
+            Title: <formalizer id="recipient_title">______________________________</formalizer>
+          </div>
         </div>
-        <div class="6u">
-          RECIPIENT (_____________________)
-        </div>
-      </div>
-      <div class="row">
-        <div class="6u">
-          Signed: <formalizer id="recipient_signed_date" required>______________________________</formalizer>
-        </div>
-        <div class="6u">
-          Signed: <formalizer id="discloser_signed_date" required>______________________________</formalizer>
-        </div>
-      </div>
-      <div class="row">
-        <div class="6u">
-          Name: <formalizer id="recipient" required>______________________________</formalizer>
-        </div>
-        <div class="6u">
-          Name: <formalizer id="discloser" required>______________________________</formalizer>
-        </div>
-      </div>
-      <div class="row">
-        <div class="6u">
-          Title: <formalizer id="recipient_title">______________________________</formalizer>
-        </div>
-        <div class="6u">
-          Title: <formalizer id="discloser_title">______________________________</formalizer>
+        <div class="column">
+          <div>
+            RECIPIENT (_____________________)
+          </div>
+          <div>
+            Signed: <formalizer id="discloser_signed_date" required>______________________________</formalizer>
+          </div>
+          <div>
+            Name: <formalizer id="discloser" required>______________________________</formalizer>
+          </div>
+          <div>
+            Title: <formalizer id="discloser_title">______________________________</formalizer>
+          </div>
         </div>
       </div>
     </div>

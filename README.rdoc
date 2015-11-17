@@ -1,9 +1,0 @@
-= Formalizer
-
-This project rocks and uses MIT-LICENSE.
-
-Generate filled PDF documents from template HTML forms
-
-== Under Construction
-
-This project is still in development. At this time, please do not clone or fork. All requests will be ignored until project is ready to launch.

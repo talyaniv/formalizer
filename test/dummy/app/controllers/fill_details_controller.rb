@@ -1,2 +1,0 @@
-class FillDetailsController < ApplicationController
-end

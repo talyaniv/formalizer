@@ -47,7 +47,15 @@ class Formalizer
     # Exports the filled form into a PDF file uwing Wicked PDF gem
 
     def export_to_pdf filename = 'pdf'
-      pdf = WickedPdf.new.pdf_from_string(@html_template.to_s)
+      # replacing html image tags with wicked_pdf tags
+      html = @html_template.to_s
+      @html_template.css('img').each do |image_tag|
+        html.gsub!(image_tag.to_s, replace_tag(image_tag, 'src'))
+      end
+      @html_template.css('link').each do |rel_tag|
+        html.gsub!(rel_tag.to_s, replace_tag(rel_tag, 'href'))
+      end
+      WickedPdf.new.pdf_from_string(html)
     end
 
 
@@ -102,6 +110,16 @@ class Formalizer
       @html_template.css('formalizer').each do |html_field|
         raise FormTemplateError if html_field.attributes['id'].nil?
       end
+    end
+
+
+    # replacing html references/assets references with absolute file paths for PDF export
+
+    def replace_tag tag, attribute
+      final_path = Utils::final_path(tag[attribute])
+      return '' if final_path.empty?
+      tag[attribute] = final_path
+      return tag.to_s
     end
 
   end
