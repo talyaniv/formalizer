@@ -1,19 +1,20 @@
-Tue, 17 Nov 2015 11:37:43 +0200
+Tue, 17 Nov 2015 16:04:25 +0200
 ./formalizer-0.9.1.gem	Sun, 08 Nov 2015 11:06:08 +0200
-./formalizer.gemspec	Mon, 16 Nov 2015 21:27:07 +0200
-./Gemfile	Thu, 12 Nov 2015 23:25:16 +0200
-./Gemfile.lock	Thu, 12 Nov 2015 23:29:50 +0200
+./formalizer-1.0.0.gem	Tue, 17 Nov 2015 16:04:19 +0200
+./formalizer.gemspec	Tue, 17 Nov 2015 16:04:10 +0200
+./Gemfile	Tue, 17 Nov 2015 15:25:49 +0200
+./Gemfile.lock	Tue, 17 Nov 2015 14:17:47 +0200
 ./lib/formalizer/errors.rb	Thu, 12 Nov 2015 21:50:28 +0200
-./lib/formalizer/form.rb	Mon, 16 Nov 2015 23:31:21 +0200
+./lib/formalizer/form.rb	Tue, 17 Nov 2015 11:48:52 +0200
 ./lib/formalizer/form_field.rb	Thu, 12 Nov 2015 22:29:02 +0200
-./lib/formalizer/formalizer.rb	Thu, 12 Nov 2015 21:51:08 +0200
+./lib/formalizer/formalizer.rb	Tue, 17 Nov 2015 11:48:40 +0200
 ./lib/formalizer/utils.rb	Mon, 16 Nov 2015 23:29:44 +0200
-./lib/formalizer/version.rb	Sun, 08 Nov 2015 11:06:08 +0200
+./lib/formalizer/version.rb	Tue, 17 Nov 2015 15:58:06 +0200
 ./lib/formalizer.rb	Sun, 08 Nov 2015 11:06:08 +0200
 ./lib/tasks/formalizer_tasks.rake	Sun, 08 Nov 2015 11:06:08 +0200
-./MIT-LICENSE	Sun, 08 Nov 2015 11:06:08 +0200
+./MIT-LICENSE	Tue, 17 Nov 2015 15:26:58 +0200
 ./Rakefile	Sun, 08 Nov 2015 11:06:08 +0200
-./README.md	Mon, 16 Nov 2015 21:47:04 +0200
+./README.rdoc	Tue, 17 Nov 2015 15:50:05 +0200
 ./test/dummy/app/assets/images/acme_logo.jpg	Fri, 13 Nov 2015 09:32:54 +0200
 ./test/dummy/app/assets/images/formalizer.png	Wed, 11 Nov 2015 10:07:34 +0200
 ./test/dummy/app/assets/javascripts/application.js	Sun, 08 Nov 2015 11:06:08 +0200
@@ -40,6 +41,7 @@ Tue, 17 Nov 2015 11:37:43 +0200
 ./test/dummy/bin/rails	Sun, 08 Nov 2015 11:06:08 +0200
 ./test/dummy/bin/rake	Sun, 08 Nov 2015 11:06:08 +0200
 ./test/dummy/bin/setup	Sun, 08 Nov 2015 11:06:08 +0200
+./test/dummy/config/_formalizer.yml	Tue, 10 Nov 2015 16:31:31 +0200
 ./test/dummy/config/alternative_invalid_config1.yml	Sun, 08 Nov 2015 11:06:08 +0200
 ./test/dummy/config/alternative_invalid_config2.yml	Sun, 08 Nov 2015 11:06:08 +0200
 ./test/dummy/config/alternative_valid_config.yml	Sun, 08 Nov 2015 11:06:08 +0200
@@ -50,8 +52,7 @@ Tue, 17 Nov 2015 11:37:43 +0200
 ./test/dummy/config/environments/development.rb	Sun, 08 Nov 2015 11:06:08 +0200
 ./test/dummy/config/environments/production.rb	Sun, 08 Nov 2015 11:06:08 +0200
 ./test/dummy/config/environments/test.rb	Sun, 08 Nov 2015 11:06:08 +0200
-./test/dummy/config/form1.html	Mon, 16 Nov 2015 23:38:50 +0200
-./test/dummy/config/formalizer.yml	Tue, 10 Nov 2015 16:31:31 +0200
+./test/dummy/config/form1.html	Tue, 17 Nov 2015 15:30:58 +0200
 ./test/dummy/config/initializers/assets.rb	Mon, 16 Nov 2015 21:16:09 +0200
 ./test/dummy/config/initializers/backtrace_silencers.rb	Sun, 08 Nov 2015 11:06:08 +0200
 ./test/dummy/config/initializers/cookies_serializer.rb	Sun, 08 Nov 2015 11:06:08 +0200

@@ -62,7 +62,17 @@
     <iframe id="search_frame"></iframe>
 
     <div id="content"><div id='filecontents'>
-<h2 id="label-Formalizer">Formalizer</h2>
+<h1 id="label-Formalizer">Formalizer</h1>
+
+<p><a href="https://badge.fury.io/gh/talyaniv%2Fformalizer"><img
+src="https://badge.fury.io/gh/talyaniv%2Fformalizer.svg" alt="GitHub
+version" /></a></p>
+
+<p><img
+src="https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/formalizer.png"
+/></p>
+
+<h2 id="label-About">About</h2>
 
 <p>Formalizer is an open-source gem for simplifying HTML-form filling and
 exporting:</p>
@@ -70,29 +80,281 @@ exporting:</p>
 <p>Store blank contracts, agreements, disclosure sheets etc. as HTML
 templates.</p>
 </li><li>
-<p>Wrap blank data with &lt;formalizer&gt; tags:</p>
-
+<p>In form templates, wrap blank data with &lt;formalizer&gt; tags:</p>
+<ul><li>
 <p><strong>before:</strong> <code>name: <em>__</em></code></p>
-
+</li><li>
 <p><strong>after:</strong> <code>name: &lt;formalizer
 id=&quot;name&quot;&gt;<em>__</em>&lt;/formalizer&gt;</code></p>
+</li></ul>
 </li><li>
 <p>Get user data from any source, or simply let Formalizer generate user-input
 forms for you.</p>
 </li><li>
-<p>Formalizer will replace the &lt;formalizer&gt; tags with user data:</p>
+<p>Formalizer will replace the template &lt;formalizer&gt; tags with user
+data:</p>
 
-<p><code>name: &lt;formalizer id=&quot;name&quot;&gt;John
-D.&lt;/formalizer&gt;</code></p>
+<pre class="code ruby"><code class="ruby">name: &lt;formalizer id=&quot;name&quot;&gt;John D.&lt;/formalizer&gt;</code></pre>
 </li><li>
 <p>Filled forms can be exported to PDF using <a
-href="https://github.com/mileszs/wicked_pdf">Wicked PDF</a> gem, or to raw
+href="https://github.com/mileszs/wicked_pdf">Wicked PDF gem</a>, or to raw
 html, for additional styling.</p>
 </li></ul>
+
+<h2 id="label-Install">Install</h2>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>formalizer</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>or add to your Gemfile:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>formalizer</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<h2 id="label-Demo">Demo</h2>
+
+<p>Clone this repo, edit the root Gemfile and uncomment the last two lines:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>wicked_pdf</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>wkhtmltopdf-binary</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>Start the demo:</p>
+
+<pre class="code ruby"><code class="ruby">$ cd test/dummy
+$ bundle install
+$ rails server
+$ open http://localhost:3000</code></pre>
+
+<h2 id="label-Usage">Usage</h2>
+
+<h3 id="label-Configuration">Configuration</h3>
+
+<p>Formalizer looks for <code>formalizer.yml</code> YAML file in config
+directory. If exists, it will load the configuration, otherwise, it can be
+configured programatically.</p>
+
+<h3 id="label-Very+basic+example">Very basic example</h3>
+
+<pre class="code ruby"><code class="ruby"># config/formalizer.yml
+form_fields:
+  name:
+    name: Your full name 
+  gender:
+    name: Your gender 
+    field_type: enum
+    enumeration:
+      - Male
+      - Female
+      - Irellevant
+    default_value: 2
+forms:
+  simple_form_example:
+    path: &#39;An HTML template that requires a name:&lt;formalizer id=&quot;name&quot; required&gt;_____ (required)&lt;/formalizer&gt;, and an optional gender:&lt;formalizer id=&quot;gender&quot;&gt;[male, female, irrelevant] (optional)&lt;/formalizer&gt;&#39;</code></pre>
+
+<p>To fill the (only) form template, we need user input for name and gender.
+Here is a quick flow from user data to filled PDF file:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_formalizer'>formalizer</span> <span class='op'>=</span> <span class='const'>Formalizer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='comment'># will load YAML configuration
+</span>
+<span class='comment'># Filling fields with values, regardless to the template form, so they can be reusable to another template form. Since we configured gender to be enum (zero based), a Female value is 1 (0 - Male, 1 - Female, 2 - Irrelevant):
+</span><span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_fill_fields'>fill_fields</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Michelle Markus</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>gender:</span> <span class='int'>1</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+<span class='comment'># Exporting to PDF:
+</span><span class='id identifier rubyid_pdf_file'>pdf_file</span> <span class='op'>=</span> <span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_export_form_to_pdf'>export_form_to_pdf</span><span class='lparen'>(</span><span class='symbol'>:simple_form_example</span><span class='rparen'>)</span>
+
+<span class='comment'># Inside a controller, you can push the result to user:
+</span><span class='id identifier rubyid_send_data'>send_data</span> <span class='id identifier rubyid_pdf_file'>pdf_file</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>filename:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>simple_form_example.pdf</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>disposition:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>attachment</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span>
+</code></pre>
+
+<h2 id="label-Under+the+hood">Under the hood</h2>
+
+<h3 id="label-Forms-2C+Form+Fields+and+tags">Forms, Form Fields and tags</h3>
+
+<p>Let&#39;s say we have three different form templates:</p>
+<ol><li>
+<p>Cover Page</p>
+</li><li>
+<p>NDA</p>
+</li><li>
+<p>Purchase Agreement</p>
+</li></ol>
+
+<p>All three forms require personal user input: Full name and address. NDA and
+Purchase agreement also require recipient&#39;s full name and address. We
+end up with four fields:</p>
+<ol><li>
+<p>Full name</p>
+</li><li>
+<p>Address</p>
+</li><li>
+<p>Recipient&#39;s Full name</p>
+</li><li>
+<p>Recipient&#39;s Address</p>
+</li></ol>
+
+<p>By having user input for all four fields, we can fill the three templates
+altogether and export as filled PDF or HTML files.</p>
+
+<p>Since Cover Page doesn&#39;t require recipient fields, we can group our
+forms and fields in tags:</p>
+<ul><li>
+<p><strong>with_recipient:</strong> forms 2 and 3, fields 3 and 4</p>
+</li><li>
+<p><strong>without_recipient:</strong> form 1, fields 1 and 2</p>
+</li></ul>
+
+<p>Now, if we only fill the cover page, we don&#39;t need to pass all the
+fields:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_pdf_file'>pdf_file</span> <span class='op'>=</span> <span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_export_form_to_pdf'>export_form_to_pdf</span><span class='lparen'>(</span><span class='symbol'>:cover_page</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>without_recipient</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<p>This will make the call more efficient, as it will pass only
+&#39;without_recipient&#39; fields.</p>
+
+<h3 id="label-Form+Fields">Form Fields</h3>
+
+<p>In YAML configuration:</p>
+
+<pre class="code ruby"><code class="ruby">form_fields:
+  [field_unique_id]:
+    name: (required) Text that will be displayed to user when generating an input form.
+    field_type: (optional) One of the following: text, boolean, number, enum or multiple. Default - text
+    tags: (optional) one or more tag that this field belongs to, e.g. &#39;without_recipient&#39;
+    default_value: (optional) default value for filling templates without user input. Boolean field_type: true/false. Enum field_type: the selected value, zero-based.
+    enumeration: (required if field_type is enum) a list of at least two options
+
+ forms:
+   [form_unique_id]:
+     path: (required) a file path to the form, or actual form html. The file path can be absolute or relative to config directory.
+     tags: (optional) one or more tags that this form belongs to, e.g. &#39;without_recipient&#39;</code></pre>
+
+<p>Localization: form_field name and enumeration can have localized version.
+If not stated, Formalizer will use Application&#39;s locale
+(<code>I18n.locale</code>). Otherwise, use this syntax:</p>
+
+<pre class="code ruby"><code class="ruby">form_fields
+  gender:
+    name:
+      en: gender
+      es: género
+    field_type: enum
+    enumeration:
+      en:
+        - Male
+        - Female
+        - Irrelevant
+      es:
+        - Masculino
+        - Feminino
+        - Irrelevante</code></pre>
+
+<h2 id="label-Generating+user+details+form">Generating user details form</h2>
+
+<p>In the above example, we had four fields to be filled with user data. We
+can generate an html form for receiving input data:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Creating a Formalizer instance
+</span><span class='id identifier rubyid_formalizer'>formalizer</span> <span class='op'>=</span> <span class='const'>Formalizer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+
+<span class='comment'># Formalizer::generate_fields_form locale = I18n.locale, form_action = &#39;&#39;, tag = nil
+</span><span class='id identifier rubyid_simple_form'>simple_form</span> <span class='op'>=</span> <span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_generate_fields_form'>generate_fields_form</span>
+<span class='comment'># this will create a &lt;form&gt; with all four fields
+</span>
+<span class='comment'># more specific versions:
+</span><span class='id identifier rubyid_localized_form'>localized_form</span> <span class='op'>=</span> <span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_generate_fields_form'>generate_fields_form</span><span class='lparen'>(</span><span class='symbol'>:es</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_form_with_action'>form_with_action</span> <span class='op'>=</span> <span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_generate_fields_form'>generate_fields_form</span><span class='lparen'>(</span><span class='const'>I18n</span><span class='period'>.</span><span class='id identifier rubyid_locale'>locale</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>post_fields</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_partial_form'>partial_form</span> <span class='op'>=</span> <span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_generate_fields_form'>generate_fields_form</span><span class='lparen'>(</span><span class='const'>I18n</span><span class='period'>.</span><span class='id identifier rubyid_locale'>locale</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>without_recipient</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h2 id="label-HTML+images+and+styles">HTML images and styles</h2>
+
+<p>Binding happens at the server, so we need absolute file paths to images and
+css files. See the demo for specific code examples. Basically your html can
+look like this:</p>
+
+<pre class="code ruby"><code class="ruby">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Cover Page&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/assets/form.css&quot;&gt;
+      &lt;meta charset=&quot;UTF-8&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;img src=&#39;/assets/acme_logo.jpg&#39; /&gt;
+    &lt;img src=&#39;https://raw.githubusercontent.com/talyaniv/formalizer/master/test/dummy/app/assets/images/acme_logo.jpg&#39; /&gt;
+    &lt;h1&gt;Cover Page&lt;/h1&gt;
+    Name: &lt;formalizer id=&quot;recipient&quot; required&gt;______________________________&lt;/formalizer&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Formalizer will know how to use external URLs or find files (css and
+images) inside your app&#39;s assets directory. If your files reside
+elsewhere, you will need to give an absolute file:// link. Formalizer
+<strong>does not</strong> convert style/css url()s in the current version.</p>
+
+<h2 id="label-Advanced-3A+Using+Formalizer+programatically">Advanced: Using Formalizer programatically</h2>
+
+<p>So you want to skip the config file and DIY:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='comment'># Creating a Formalizer instance
+</span><span class='id identifier rubyid_formalizer'>formalizer</span> <span class='op'>=</span> <span class='const'>Formalizer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+
+<span class='comment'># adding a form from a file, located in config directory
+</span><span class='comment'># Formalizer::add_form (symbol) id, (hash) details
+</span><span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_add_form'>add_form</span><span class='lparen'>(</span><span class='symbol'>:form1</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>path:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>form1.html</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+<span class='comment'># creating a field
+</span><span class='comment'># Formalizer::add_form_field (hash) details
+</span><span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_add_form_field'>add_form_field</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='label'>id:</span> <span class='symbol'>:field1</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>email</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
+
+<span class='comment'># filling the template with user input
+</span><span class='comment'># Formalizer::field_field (Symbol) field_id, field_value
+</span><span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_fill_field'>fill_field</span> <span class='symbol'>:field1</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>john@doe.com</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='comment'># Exporting
+</span><span class='id identifier rubyid_formalizer'>formalizer</span><span class='period'>.</span><span class='id identifier rubyid_export_form_to_pdf'>export_form_to_pdf</span><span class='lparen'>(</span><span class='symbol'>:form1</span><span class='rparen'>)</span>
+</code></pre>
+
+<h2 id="label-Contributing+to+Formazlizer">Contributing to Formazlizer</h2>
+<ul><li>
+<p>Check out the latest master to make sure the feature hasn&#39;t been
+implemented or the bug hasn&#39;t been fixed yet</p>
+</li><li>
+<p>Check out the issue tracker to make sure someone already hasn&#39;t
+requested it and/or contributed it</p>
+</li><li>
+<p>Fork the project</p>
+</li><li>
+<p>Start a feature/bugfix branch</p>
+</li><li>
+<p>Commit and push until you are happy with your contribution</p>
+</li><li>
+<p>Make sure to add tests for it. Tests are important for future stability!
+Run tests before pushing.</p>
+</li><li>
+<p>If you uncommented the root Gemfile, remember to comment it again.</p>
+</li><li>
+<p>Feel free to email and report issues!</p>
+</li></ul>
+
+<h2 id="label-TODO-3A">TODO:</h2>
+<ul><li>
+<p>Parse style/css url() directives</p>
+</li><li>
+<p>Sign documents with external API, e.g. Docusign</p>
+</li></ul>
+
+<h2 id="label-Copyright">Copyright</h2>
+
+<p>Copyright © 2015 Tal Yaniv. See MIT-LICENSE for further details.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Tue Nov 17 11:48:55 2015 by
+  Generated on Tue Nov 17 16:04:41 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.2).
 </div>
