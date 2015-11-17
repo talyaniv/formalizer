@@ -108,3 +108,5 @@ PLATFORMS
 
 DEPENDENCIES
   formalizer!
+  wicked_pdf
+  wkhtmltopdf-binary
