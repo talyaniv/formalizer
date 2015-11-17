@@ -188,7 +188,7 @@ So you want to skip the config file and DIY:
   # Exporting
   formalizer.export_form_to_pdf(:form1)
 
-== Contributing to Formazlier
+== Contributing to Formazlizer
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
@@ -197,6 +197,10 @@ So you want to skip the config file and DIY:
 * Make sure to add tests for it. Tests are important for future stability! Run tests before pushing.
 * If you uncommented the root Gemfile, remember to comment it again.
 * Feel free to email and report issues!
+
+== TODO:
+* Parse style/css url() directives
+* Sign documents with external API, e.g. Docusign
 
 == Copyright
 
