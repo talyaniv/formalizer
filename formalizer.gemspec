@@ -15,7 +15,10 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/talyaniv/formalizer"
   s.summary     = "Generate filled PDF documents from template HTML forms"
   s.description = <<-eof
-    Easily generate beautiful filled PDF documents from HTML forms. Create your forms in HTML, including style and pictures, then use param/value pairs to fill the forms and finally export everything to a nicely format PDF file.
+    Easily generate filled PDF documents from HTML templates.
+    Formalizer takes HTML templates with styles and images, 
+    replaces blank targets with dynamic user data and finally exports the filled forms
+    into PDF or HTML.
   eof
   s.license     = "MIT"
 
@@ -24,6 +27,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2"
   s.add_dependency "nokogiri", "~> 1.3"
-  s.add_dependency "wicked_pdf", "~> 1.0.0"
+  s.add_dependency "wicked_pdf", "~> 1.0"
   s.add_dependency "wkhtmltopdf-binary", "~> 0"
 end
