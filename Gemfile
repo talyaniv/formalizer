@@ -18,3 +18,7 @@ gemspec
 gem 'nokogiri', '~> 1.6.6'
 gem 'wicked_pdf', '~> 1.0.0'
 gem 'wkhtmltopdf-binary'
+
+group :test do
+  gem 'rake', '~> 10.4'
+end
