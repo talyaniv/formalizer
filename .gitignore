@@ -4,6 +4,8 @@ pkg/
 vendor/*
 doc/
 .yardoc/
+*.gem
+:c.DS_Store
 test/dummy/db/*.sqlite3
 test/dummy/db/*.sqlite3-journal
 test/dummy/log/*.log
