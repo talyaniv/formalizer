@@ -108,6 +108,7 @@ PLATFORMS
 DEPENDENCIES
   formalizer!
   nokogiri (~> 1.6.6)
+  rake (~> 10.4)
   wicked_pdf (~> 1.0.0)
   wkhtmltopdf-binary
 
