@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    wicked_pdf (1.0.0)
+    wicked_pdf (1.0.1)
     wkhtmltopdf-binary (0.9.9.3)
 
 PLATFORMS
@@ -10,3 +10,6 @@ PLATFORMS
 DEPENDENCIES
   wicked_pdf
   wkhtmltopdf-binary
+
+BUNDLED WITH
+   1.10.6
