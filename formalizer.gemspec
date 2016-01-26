@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 4.2"
-  s.add_dependency "nokogiri", "~> 1.6.7"
+  s.add_dependency "nokogiri", "~> 1.6"
   s.add_dependency "wicked_pdf", "~> 1.0"
   s.add_dependency "wkhtmltopdf-binary", "~> 0"
 end
