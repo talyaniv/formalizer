@@ -16,7 +16,7 @@ gemspec
 
 # Uncomment for demo:
 gem 'nokogiri', '~> 1.6'
-gem 'wicked_pdf', '~> 1.0.0'
+gem 'wicked_pdf', '~> 1.0'
 gem 'wkhtmltopdf-binary'
 
 group :test do
